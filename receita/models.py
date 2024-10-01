@@ -27,10 +27,17 @@ class Receita(models.Model):
         return f'{self.titulo} - {self.autor}'
     
 class Avaliacao(models.Model):
+    NOTA_CHOICES = [
+    (1, 'Muito Ruim'),
+    (2, 'Ruim'),
+    (3, 'Razoável'),
+    (4, 'Bom'),
+    (5, 'Excelente'),
+    ]
     comentario = models.TextField(null=True, blank=True)
     fk_usuario = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='rating')
     fk_receita = models.ForeignKey(Receita, on_delete=models.CASCADE, related_name='rating')
-    nota = models.IntegerField(choices=[(i, str(i)) for i in range(1, 6)])
+    nota = models.PositiveSmallIntegerField(choices=NOTA_CHOICES, default=3)
     
     def __str__(self):
         return self.comentario
